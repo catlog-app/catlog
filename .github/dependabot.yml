@@ -8,6 +8,14 @@ updates:
     # A new release must be 7 days old. This gives time to find a bad or hijacked release.
     cooldown:
       default-days: 7
+    ignore:
+      # The Node types must match the Node version we build with (24). Change them together.
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
+      # typescript-eslint does not support TypeScript 7 yet (peer range is below 6.1).
+      # Remove this rule when typescript-eslint supports the new major version.
+      - dependency-name: 'typescript'
+        update-types: ['version-update:semver-major']
     # Updates are reviewed by hand. Read the diff of package-lock.json before you merge.
     commit-message:
       prefix: 'Update'
