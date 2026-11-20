@@ -61,6 +61,10 @@ export function buildVetSummary(
     '',
   );
 
+  lines.push(`${v.vomit}: ${s.vomitTotal} (${s.vomitDays} ${v.days})`);
+  if (s.topVomitTags.length > 0) {
+    lines.push(`- ${s.topVomitTags.map(([t, n]) => `${t} (${n})`).join(', ')}`);
+  }
   lines.push(`${v.sleep}: ${s.sleepProblemDays} ${v.days}`);
   if (s.topSleepTags.length > 0) {
     lines.push(`- ${s.topSleepTags.map(([t, n]) => `${t} (${n})`).join(', ')}`);

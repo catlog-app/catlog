@@ -48,6 +48,10 @@ export interface RangeSummary extends DateRange {
   stressDays: number;
   topStressCauses: [string, number][];
   topSleepTags: [string, number][];
+  /** Days with at least one vomit, the number of vomit entries, and the common kinds. */
+  vomitDays: number;
+  vomitTotal: number;
+  topVomitTags: [string, number][];
 }
 
 function top(items: string[], limit = 5): [string, number][] {
@@ -92,5 +96,8 @@ export function summarizeRange(events: readonly CatEvent[], range: DateRange): R
     stressDays: days.filter((d) => d.hasStress).length,
     topStressCauses: top(days.flatMap((d) => d.stressTags)),
     topSleepTags: top(days.flatMap((d) => d.sleepTags)),
+    vomitDays: days.filter((d) => d.vomitCount > 0).length,
+    vomitTotal: days.reduce((sum, d) => sum + d.vomitCount, 0),
+    topVomitTags: top(days.flatMap((d) => d.vomitTags)),
   };
 }

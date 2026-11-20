@@ -75,6 +75,7 @@ export function buildEventsTable({ cat, events, periods, from, to }: ExportInput
     'Sleep tags',
     'Stress tags',
     'Stress severity (0-3)',
+    'Vomit tags',
     'Note',
     'Active periods',
   ];
@@ -106,6 +107,7 @@ export function buildEventsTable({ cat, events, periods, from, to }: ExportInput
         e.type === 'sleep' ? e.tags.map(safeText).join('; ') : null,
         e.type === 'stress' ? e.tags.map(safeText).join('; ') : null,
         e.type === 'stress' ? (e.severity ?? 0) : null,
+        e.type === 'vomit' ? e.tags.map(safeText).join('; ') : null,
         e.note === '' ? null : safeText(e.note),
         active === '' ? null : active,
       ];
@@ -133,6 +135,8 @@ export function buildDailyTable({ cat, events, periods, from, to }: ExportInput)
     'Sleep tags',
     'Max stress severity',
     'Stress tags',
+    'Vomit count',
+    'Vomit tags',
     'Notes',
     'Active periods',
     ...catPeriods.map((p) => names.get(p.id) ?? p.title),
@@ -159,6 +163,8 @@ export function buildDailyTable({ cat, events, periods, from, to }: ExportInput)
     d.sleepTags.length > 0 ? d.sleepTags.map(safeText).join('; ') : null,
     d.maxStress,
     d.stressTags.length > 0 ? d.stressTags.map(safeText).join('; ') : null,
+    d.vomitCount,
+    d.vomitTags.length > 0 ? d.vomitTags.map(safeText).join('; ') : null,
     d.notes.length > 0 ? safeText(d.notes.join(' | ')) : null,
     d.activePeriodIds.length > 0
       ? catPeriods

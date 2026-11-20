@@ -11,7 +11,7 @@ export function makeCat(over: Partial<Cat> = {}): Cat {
     id: nextId('cat'),
     name: 'Test cat',
     archived: false,
-    customTags: { sleep: [], stress: [] },
+    customTags: { sleep: [], stress: [], vomit: [] },
     createdAt: 1000,
     updatedAt: 1000,
     ...over,
@@ -62,6 +62,7 @@ export function makeEvent(
     case 'water':
       return { ...base, water: 2, ...fields };
     case 'sleep':
+    case 'vomit':
       return { ...base, tags: [], ...fields };
     case 'stress':
       return { ...base, tags: [], severity: null, ...fields };

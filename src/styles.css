@@ -362,8 +362,8 @@ textarea.input {
 
 .quick {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.5rem;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.35rem;
   padding: 0.25rem 1rem 0.75rem;
 }
 .quick__btn {

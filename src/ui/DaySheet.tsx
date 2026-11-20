@@ -15,7 +15,7 @@ interface DaySheetProps {
   onAddPeriod: () => void;
 }
 
-const TYPES: EventType[] = ['stool', 'water', 'sleep', 'stress'];
+const TYPES: EventType[] = ['stool', 'water', 'vomit', 'sleep', 'stress'];
 
 export function DaySheet({
   catId,

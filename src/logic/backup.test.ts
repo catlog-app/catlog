@@ -62,6 +62,28 @@ describe('backup', () => {
     expect(result.ok && 'evil' in result.backup.cats[0]!).toBe(false);
   });
 
+  it('keeps vomit entries and the emoji of a cat', () => {
+    const pet = makeCat({ emoji: '🐶' });
+    const vomit = makeEvent(pet.id, '2026-11-02', { type: 'vomit', tags: ['Foam'] });
+    const snap = snapshot({ cats: [pet], events: [vomit], periods: [] });
+    const result = parseBackup(JSON.stringify(createBackup(snap)));
+    expect(result.ok && result.backup.events).toEqual([vomit]);
+    expect(result.ok && result.backup.cats[0]?.emoji).toBe('🐶');
+  });
+
+  it('reads a cat from an older backup without own vomit tags', () => {
+    const file = createBackup(snapshot());
+    const old = { ...file, cats: [{ ...file.cats[0], customTags: { sleep: [], stress: [] } }] };
+    const result = parseBackup(JSON.stringify(old));
+    expect(result.ok && result.backup.cats[0]?.customTags.vomit).toEqual([]);
+  });
+
+  it('rejects an emoji that is not in the list', () => {
+    const file = createBackup(snapshot());
+    const bad = { ...file, cats: [{ ...file.cats[0], emoji: '<b>' }] };
+    expect(parseBackup(JSON.stringify(bad))).toEqual({ ok: false, error: 'format' });
+  });
+
   it('names the file with the date', () => {
     expect(backupFileName(Date.UTC(2026, 10, 20))).toBe('catlog-backup-2026-11-20.json');
   });

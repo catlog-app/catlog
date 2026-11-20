@@ -1,7 +1,7 @@
 import { useState } from 'preact/hooks';
 import { strings } from '../strings';
 import { store, useStore, type EventFields } from '../store';
-import type { CatEvent, EventType } from '../types';
+import type { CatEvent, EventType, TagKind } from '../types';
 import { isDateString, isTimeString } from '../logic/dates';
 import { stampFromLocal, stampFromMoment } from '../logic/time';
 import { Chip } from './Chip';
@@ -33,7 +33,7 @@ export function EventForm({ type, catId, existing, defaultDate, onDone }: EventF
   );
   const stool = existing?.type === 'stool' ? existing : undefined;
   const water = existing?.type === 'water' ? existing : undefined;
-  const tagged = existing?.type === 'sleep' || existing?.type === 'stress' ? existing : undefined;
+  const tagged = existing && 'tags' in existing ? existing : undefined;
   const stress = existing?.type === 'stress' ? existing : undefined;
 
   const [nowValue] = useState(() => {
@@ -81,6 +81,7 @@ export function EventForm({ type, catId, existing, defaultDate, onDone }: EventF
         }
         return { type, water: waterLevel as 1 | 2 | 3 };
       case 'sleep':
+      case 'vomit':
         return { type, tags };
       case 'stress':
         return { type, tags, severity: severity as 1 | 2 | 3 | null };
@@ -227,11 +228,9 @@ export function EventForm({ type, catId, existing, defaultDate, onDone }: EventF
         </fieldset>
       )}
 
-      {(type === 'sleep' || type === 'stress') && (
+      {type !== 'stool' && type !== 'water' && (
         <fieldset class="group">
-          <legend class="field__label">
-            {type === 'sleep' ? strings.form.sleepQuestion : strings.form.stressCause}
-          </legend>
+          <legend class="field__label">{TAG_QUESTION[type]}</legend>
           <TagPicker
             kind={type}
             own={cat?.customTags[type] ?? []}
@@ -289,8 +288,14 @@ export function EventForm({ type, catId, existing, defaultDate, onDone }: EventF
   );
 }
 
+const TAG_QUESTION: Record<TagKind, string> = {
+  sleep: strings.form.sleepQuestion,
+  stress: strings.form.stressCause,
+  vomit: strings.form.vomitQuestion,
+};
+
 interface TagPickerProps {
-  kind: 'sleep' | 'stress';
+  kind: TagKind;
   own: string[];
   selected: string[];
   onToggle: (text: string) => void;
@@ -298,7 +303,7 @@ interface TagPickerProps {
 
 /** Preset tags, the cat's own tags, and own tags added in this form. */
 function TagPicker({ kind, own, selected, onToggle }: TagPickerProps) {
-  const presets = kind === 'sleep' ? strings.sleepTags : strings.stressTags;
+  const presets = strings.tagPresets[kind];
   const known = new Set([...presets.map((p) => p.text), ...own]);
   const extra = selected.filter((t) => !known.has(t));
   const items = [...presets, ...[...own, ...extra].map((text) => ({ text, emoji: '🏷️' }))];

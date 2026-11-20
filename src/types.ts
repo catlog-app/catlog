@@ -1,6 +1,9 @@
 // Data model. See README "Data" for the storage rules.
 
-export type EventType = 'stool' | 'water' | 'sleep' | 'stress';
+export type EventType = 'stool' | 'water' | 'sleep' | 'stress' | 'vomit';
+
+/** Entries that are described by a list of tags. */
+export type TagKind = 'sleep' | 'stress' | 'vomit';
 
 /** Scale for mucus, blood and smell. 0 = none, 3 = strong. */
 export type Level = 0 | 1 | 2 | 3;
@@ -34,7 +37,7 @@ interface Base {
 }
 
 /** Emoji that stand for a pet. Emoji have no colors for cats, so these are the options. */
-export const CAT_EMOJIS = ['🐈', '🐈‍⬛', '🐅', '😸', '🐶'] as const;
+export const CAT_EMOJIS = ['🐈', '🐈‍⬛', '🐅', '🐱', '🐶'] as const;
 export type CatEmoji = (typeof CAT_EMOJIS)[number];
 export const DEFAULT_CAT_EMOJI: CatEmoji = '🐈';
 
@@ -44,7 +47,7 @@ export interface Cat extends Base {
   emoji?: CatEmoji;
   archived: boolean;
   /** Own tags, saved as text so exports stay readable. */
-  customTags: { sleep: string[]; stress: string[] };
+  customTags: Record<TagKind, string[]>;
 }
 
 interface EventBase extends Base {
@@ -79,7 +82,11 @@ export interface StressEvent extends EventBase {
   tags: string[];
   severity: Severity | null;
 }
-export type CatEvent = StoolEvent | WaterEvent | SleepEvent | StressEvent;
+export interface VomitEvent extends EventBase {
+  type: 'vomit';
+  tags: string[];
+}
+export type CatEvent = StoolEvent | WaterEvent | SleepEvent | StressEvent | VomitEvent;
 
 export interface Period extends Base {
   catId: string;

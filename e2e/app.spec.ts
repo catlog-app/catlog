@@ -52,6 +52,15 @@ test('records entries, offers own tags, and makes no outside requests or CSP err
   await expect(page.locator('.chip', { hasText: 'Plays at 3 am' })).toBeVisible();
   await page.keyboard.press('Escape');
 
+  // A vomit entry with a ready-made tag.
+  await quick(page, 'Vomit').click();
+  await page.locator('.chip', { hasText: 'Foam' }).click();
+  await page.getByRole('button', { name: 'Save' }).click();
+  await tab(page, 'Log').click();
+  await expect(page.getByRole('button', { name: /Vomit/ }).filter({ hasText: 'Foam' })).toHaveCount(
+    1,
+  );
+
   expect(outside).toEqual([]);
   expect(problems).toEqual([]);
 });

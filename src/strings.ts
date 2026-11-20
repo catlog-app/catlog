@@ -23,6 +23,7 @@ export const strings = {
     water: { emoji: '🚰', label: 'Water', exportLabel: 'Water' },
     sleep: { emoji: '🌙', label: 'Sleep', exportLabel: 'Sleep' },
     stress: { emoji: '😿', label: 'Stress', exportLabel: 'Stress' },
+    vomit: { emoji: '🤮', label: 'Vomit', exportLabel: 'Vomit' },
   },
 
   tabs: {
@@ -58,30 +59,40 @@ export const strings = {
   ],
   waterHint: 'Compared with usual',
 
-  sleepTags: [
-    { text: 'Awake at night', emoji: '👀' },
-    { text: 'Meowing at night', emoji: '📢' },
-    { text: 'Sleeps too much', emoji: '😴' },
-    { text: 'Restless sleep', emoji: '😣' },
-  ],
-
   stressSeverity: [
     { code: 1, emoji: '😟', label: 'Mild' },
     { code: 2, emoji: '😿', label: 'Medium' },
     { code: 3, emoji: '🙀', label: 'Strong' },
   ],
 
-  stressTags: [
-    { text: 'Visitors', emoji: '👥' },
-    { text: 'Loud noise', emoji: '🔊' },
-    { text: 'Home repairs', emoji: '🔨' },
-    { text: 'Vet visit', emoji: '🏥' },
-    { text: 'Moving or new place', emoji: '📦' },
-    { text: 'Other pet', emoji: '🐕' },
-    { text: 'New food', emoji: '🍽️' },
-    { text: 'New medicine', emoji: '💊' },
-    { text: 'Hot weather', emoji: '🥵' },
-  ],
+  // Ready-made tags for the entries that have a list of tags. The text is saved as it is.
+  tagPresets: {
+    sleep: [
+      { text: 'Awake at night', emoji: '👀' },
+      { text: 'Meowing at night', emoji: '📢' },
+      { text: 'Sleeps too much', emoji: '😴' },
+      { text: 'Restless sleep', emoji: '😣' },
+    ],
+    stress: [
+      { text: 'Visitors', emoji: '👥' },
+      { text: 'Loud noise', emoji: '🔊' },
+      { text: 'Home repairs', emoji: '🔨' },
+      { text: 'Vet visit', emoji: '🏥' },
+      { text: 'Moving or new place', emoji: '📦' },
+      { text: 'Other pet', emoji: '🐕' },
+      { text: 'New food', emoji: '🍽️' },
+      { text: 'New medicine', emoji: '💊' },
+      { text: 'Hot weather', emoji: '🥵' },
+    ],
+    vomit: [
+      { text: 'Food', emoji: '🍖' },
+      { text: 'Foam', emoji: '🫧' },
+      { text: 'Yellow bile', emoji: '🟡' },
+      { text: 'Hairball', emoji: '🧶' },
+      { text: 'Grass', emoji: '🌿' },
+      { text: 'Blood', emoji: '🩸' },
+    ],
+  },
 
   periodKinds: {
     med: { emoji: '💊', label: 'Medicine' },
@@ -138,6 +149,7 @@ export const strings = {
     extras: 'Other signs (optional)',
     waterQuestion: 'How much did your cat drink?',
     sleepQuestion: 'What happened?',
+    vomitQuestion: 'What was in it?',
     stressStrength: 'How strong? (optional)',
     stressCause: 'Cause',
     addOwn: 'Add your own…',
@@ -172,6 +184,7 @@ export const strings = {
       hard: 'Hard stool',
       sleep: 'Sleep problem',
       stress: 'Stress',
+      vomit: 'Vomit',
     },
     waterLabel: (label: string) => `Water: ${label}`,
   },
@@ -218,6 +231,8 @@ export const strings = {
     waterDays: 'Water (last entry of each day)',
     sleepDays: 'Days with sleep problems',
     stressDays: 'Days with stress',
+    vomitDays: 'Days with vomit',
+    vomitTags: 'Common kinds of vomit',
     causes: 'Common causes of stress',
     sleepTags: 'Common sleep problems',
     none: 'No data in this range.',
@@ -226,7 +241,7 @@ export const strings = {
     colPoop: 'Poop',
     colExtras: 'Extras',
     colWater: 'Water',
-    colSleepStress: 'Sleep and stress',
+    colSleepStress: 'Sleep, stress, vomit',
     colPeriods: 'Periods',
     copyVet: 'Copy summary for vet',
     copied: 'Copied.',
@@ -254,6 +269,7 @@ export const strings = {
     waterNote: 'compared with usual',
     sleep: 'Sleep problems',
     stress: 'Stress',
+    vomit: 'Vomit',
     days: 'days',
     periods: 'Periods',
     ongoing: 'ongoing',

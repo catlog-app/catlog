@@ -28,7 +28,7 @@ type SheetState =
   | { kind: 'import' };
 
 const TABS: Tab[] = ['calendar', 'log', 'periods', 'analysis'];
-const QUICK: EventType[] = ['stool', 'water', 'sleep', 'stress'];
+const QUICK: EventType[] = ['stool', 'water', 'vomit', 'sleep', 'stress'];
 
 export function App() {
   const state = useStore();
