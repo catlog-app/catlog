@@ -24,6 +24,8 @@ export interface DaySummary {
   hasStress: boolean;
   maxStress: number;
   stressTags: string[];
+  vomitCount: number;
+  vomitTags: string[];
   notes: string[];
   activePeriodIds: string[];
 }
@@ -64,6 +66,8 @@ export function summarizeDays(
       hasStress: false,
       maxStress: 0,
       stressTags: [],
+      vomitCount: 0,
+      vomitTags: [],
       notes: [],
       activePeriodIds: periods.filter((p) => isActiveOn(p, date)).map((p) => p.id),
     };
@@ -90,6 +94,10 @@ export function summarizeDays(
           s.maxStress = Math.max(s.maxStress, e.severity ?? 0);
           s.stressTags.push(...e.tags);
           break;
+        case 'vomit':
+          s.vomitCount++;
+          s.vomitTags.push(...e.tags);
+          break;
       }
     }
     if (s.textures.length > 0) {
@@ -99,6 +107,7 @@ export function summarizeDays(
     }
     s.sleepTags = unique(s.sleepTags);
     s.stressTags = unique(s.stressTags);
+    s.vomitTags = unique(s.vomitTags);
     return s;
   });
 }

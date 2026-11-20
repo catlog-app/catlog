@@ -80,7 +80,9 @@ function readCat(v: unknown): Cat | null {
   const tags = isRec(v['customTags']) ? v['customTags'] : {};
   const sleep = tagList(tags['sleep'] ?? []);
   const stress = tagList(tags['stress'] ?? []);
-  if (!sleep || !stress) return null;
+  // Cats saved before vomit entries existed have no list for it.
+  const vomit = tagList(tags['vomit'] ?? []);
+  if (!sleep || !stress || !vomit) return null;
   const emoji = v['emoji'];
   if (emoji !== undefined && !(CAT_EMOJIS as readonly unknown[]).includes(emoji)) return null;
   return {
@@ -88,7 +90,7 @@ function readCat(v: unknown): Cat | null {
     name: v['name'],
     ...(emoji === undefined ? {} : { emoji: emoji as CatEmoji }),
     archived: v['archived'],
-    customTags: { sleep, stress },
+    customTags: { sleep, stress, vomit },
     createdAt: v['createdAt'],
     updatedAt: v['updatedAt'],
   };
@@ -129,9 +131,10 @@ function readEvent(v: unknown): CatEvent | null {
     case 'water':
       if (!isInt(v['water'], 1, 3)) return null;
       return { ...base, type: 'water', water: v['water'] as WaterLevel };
-    case 'sleep': {
+    case 'sleep':
+    case 'vomit': {
       const tags = tagList(v['tags']);
-      return tags ? { ...base, type: 'sleep', tags } : null;
+      return tags ? { ...base, type: v['type'], tags } : null;
     }
     case 'stress': {
       const tags = tagList(v['tags']);

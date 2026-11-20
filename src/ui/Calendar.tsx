@@ -36,6 +36,7 @@ function cellLabel(date: string, d: DaySummary): string {
   if (water) parts.push(strings.calendar.waterLabel(water.label));
   if (d.sleepProblem) parts.push(f.sleep);
   if (d.hasStress) parts.push(f.stress);
+  if (d.vomitCount > 0) parts.push(f.vomit);
   return parts.join(', ');
 }
 
@@ -138,6 +139,7 @@ export function Calendar({ catId, onOpenDay, onOpenPeriod }: CalendarProps) {
                     {water && <span>{water.emoji}</span>}
                     {d?.sleepProblem && <span>🌙</span>}
                     {d?.hasStress && <span>😿</span>}
+                    {d && d.vomitCount > 0 && <span>🤮</span>}
                   </span>
                   <span class="cell__bars" aria-hidden="true">
                     {slots.map((slot, i) =>

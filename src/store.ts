@@ -11,6 +11,7 @@ import {
   type CatEmoji,
   type CatEvent,
   type Period,
+  type TagKind,
   type Settings,
   type Snapshot,
 } from './types';
@@ -28,7 +29,7 @@ export type EventFields =
       smell: 0 | 1 | 2 | 3;
     }
   | { type: 'water'; water: 1 | 2 | 3 }
-  | { type: 'sleep'; tags: string[] }
+  | { type: 'sleep' | 'vomit'; tags: string[] }
   | { type: 'stress'; tags: string[]; severity: 1 | 2 | 3 | null };
 
 export interface EventInput {
@@ -97,8 +98,16 @@ class Store {
     }
     try {
       this.db = await Database.open();
-      const snapshot = await this.db.load();
-      this.set({ status: 'ready', snapshot });
+      const loaded = await this.db.load();
+      // Cats saved before vomit entries existed have no list of own vomit tags.
+      const cats = loaded.cats.map((c) => ({
+        ...c,
+        customTags: {
+          ...c.customTags,
+          vomit: (c.customTags as Partial<Cat['customTags']>).vomit ?? [],
+        },
+      }));
+      this.set({ status: 'ready', snapshot: { ...loaded, cats } });
       await this.checkTimeZone();
       await this.refreshPersisted();
     } catch {
@@ -181,7 +190,7 @@ class Store {
       name: name.trim(),
       emoji,
       archived: false,
-      customTags: { sleep: [], stress: [] },
+      customTags: { sleep: [], stress: [], vomit: [] },
       createdAt: now,
       updatedAt: now,
     };
@@ -221,7 +230,7 @@ class Store {
       : [...snapshot.events, event];
     this.setSnapshot({ events });
 
-    if (event.type === 'sleep' || event.type === 'stress') {
+    if (event.type === 'sleep' || event.type === 'stress' || event.type === 'vomit') {
       await this.rememberCustomTags(event.catId, event.type, event.tags);
     }
     // After the first save the browser is more likely to accept the request.
@@ -229,17 +238,16 @@ class Store {
   }
 
   /** Own tags are offered again next time. Preset tags are not saved. */
-  private async rememberCustomTags(catId: string, kind: 'sleep' | 'stress', tags: string[]) {
+  private async rememberCustomTags(catId: string, kind: TagKind, tags: string[]) {
     const cat = this.state.snapshot.cats.find((c) => c.id === catId);
     if (!cat) return;
-    const presets: string[] = (kind === 'sleep' ? strings.sleepTags : strings.stressTags).map(
-      (t) => t.text,
-    );
-    const fresh = tags.filter((t) => !presets.includes(t) && !cat.customTags[kind].includes(t));
+    const presets: string[] = strings.tagPresets[kind].map((t) => t.text);
+    const known = cat.customTags[kind];
+    const fresh = tags.filter((t) => !presets.includes(t) && !known.includes(t));
     if (fresh.length === 0) return;
     const updated: Cat = {
       ...cat,
-      customTags: { ...cat.customTags, [kind]: [...cat.customTags[kind], ...fresh] },
+      customTags: { ...cat.customTags, [kind]: [...known, ...fresh] },
       updatedAt: Date.now(),
     };
     await this.requireDb().putCat(updated);

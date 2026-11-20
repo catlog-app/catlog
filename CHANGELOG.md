@@ -7,7 +7,7 @@ All notable changes are listed here. The format follows [Keep a Changelog](https
 ### Added
 
 - First version of the app.
-- Entries for poop, water, sleep problems and stress. All details are optional.
+- Entries for poop, water, vomit, sleep problems and stress. All details are optional.
 - Special periods that can overlap, with colored bars in the calendar.
 - Calendar, log and analysis (7, 14, 30, 90 days and all).
 - More than one cat.

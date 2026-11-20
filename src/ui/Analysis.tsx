@@ -59,6 +59,7 @@ export function Analysis({ catId }: AnalysisProps) {
     [a.hardShare, percent(summary.hardShare)],
     [a.sleepDays, String(summary.sleepProblemDays)],
     [a.stressDays, String(summary.stressDays)],
+    [a.vomitDays, `${summary.vomitDays} (${summary.vomitTotal})`],
   ];
   const counts: [string, string, { any: number; strong: number }][] = [
     [strings.features.mucus.emoji, strings.features.mucus.label, summary.mucus],
@@ -123,6 +124,12 @@ export function Analysis({ catId }: AnalysisProps) {
           <p>{summary.topStressCauses.map(([t, n]) => `${t} (${n})`).join(' · ')}</p>
         </>
       )}
+      {summary.topVomitTags.length > 0 && (
+        <>
+          <h3 class="subtitle">{a.vomitTags}</h3>
+          <p>{summary.topVomitTags.map(([t, n]) => `${t} (${n})`).join(' · ')}</p>
+        </>
+      )}
       {summary.topSleepTags.length > 0 && (
         <>
           <h3 class="subtitle">{a.sleepTags}</h3>
@@ -180,6 +187,7 @@ export function Analysis({ catId }: AnalysisProps) {
                 <td>
                   {d.sleepProblem ? '🌙' : ''}
                   {d.hasStress ? '😿' : ''}
+                  {d.vomitCount > 0 ? '🤮' : ''}
                 </td>
                 <td>
                   {d.activePeriodIds.map((id) => {

@@ -8,7 +8,7 @@ import { Chip } from './Chip';
 import { EventRow } from './EventRow';
 
 const PAGE = 40;
-const TYPES: EventType[] = ['stool', 'water', 'sleep', 'stress'];
+const TYPES: EventType[] = ['stool', 'water', 'vomit', 'sleep', 'stress'];
 
 interface LogProps {
   catId: string;

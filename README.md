@@ -6,7 +6,7 @@ A health diary for your cat. It works in the browser, also offline. **Your data 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 <p>
-  <img src="docs/screenshots/calendar.png" alt="Calendar with poop, water and period bars" width="240">
+  <img src="docs/screenshots/calendar.png" alt="Calendar in the dark theme with entries and two period bars" width="240">
   <img src="docs/screenshots/add-entry.png" alt="Form to add a poop entry" width="240">
   <img src="docs/screenshots/analysis.png" alt="Analysis of the last 30 days" width="240">
 </p>
@@ -15,7 +15,7 @@ A health diary for your cat. It works in the browser, also offline. **Your data 
 
 ## What it does
 
-- Write down **poop** (texture, mucus, blood, smell), **water**, **sleep problems** and **stress**. All details are optional.
+- Write down **poop** (texture, mucus, blood, smell), **water**, **vomit**, **sleep problems** and **stress**. All details are optional.
 - Add **special periods**, like a new food or a medicine. Periods can overlap. They show as colored bars in the calendar.
 - Look at a **calendar**, a **log** and an **analysis** for 7, 14, 30 or 90 days.
 - Keep **more than one cat**.
@@ -67,11 +67,11 @@ The backup is one JSON file. You can read it with any tool, for example `pandas.
       "name": "Mila",
       "emoji": "🐈",
       "archived": false,
-      "customTags": { "sleep": [], "stress": [] },
+      "customTags": { "sleep": [], "stress": [], "vomit": [] },
     },
   ],
   "events": [
-    // "type" is stool, water, sleep or stress. The other fields depend on the type.
+    // "type" is stool, water, vomit, sleep or stress. The other fields depend on the type.
     {
       "id": "…",
       "catId": "…",
@@ -81,7 +81,7 @@ The backup is one JSON file. You can read it with any tool, for example `pandas.
       "blood": 1,
       "smell": 0,
       "at": 1795068000000,
-      "tz": "Asia/Bishkek",
+      "tz": "Asia/Dhaka",
       "date": "2026-11-19",
       "time": "12:00",
       "note": "",

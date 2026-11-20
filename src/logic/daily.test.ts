@@ -54,6 +54,15 @@ describe('daily summary', () => {
     });
   });
 
+  it('counts vomit entries of a day and lists the kinds once', () => {
+    const events = [
+      makeEvent(cat.id, '2026-11-02', { type: 'vomit', tags: ['Foam', 'Grass'] }, '08:00'),
+      makeEvent(cat.id, '2026-11-02', { type: 'vomit', tags: ['Foam'] }, '20:00'),
+    ];
+    const [day] = summarizeDays(events, [], ['2026-11-02']);
+    expect(day).toMatchObject({ vomitCount: 2, vomitTags: ['Foam', 'Grass'], hasEntries: true });
+  });
+
   it('marks all periods that are active on a day, including overlapping ones', () => {
     const a = makePeriod(cat.id, '2026-11-01', '2026-11-10');
     const b = makePeriod(cat.id, '2026-11-05', null);
