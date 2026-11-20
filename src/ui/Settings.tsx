@@ -4,7 +4,9 @@ import { store, useStore } from '../store';
 import { formatDate } from '../logic/dates';
 import { listTimeZones, todayIn, getDeviceTimeZone } from '../logic/time';
 import { resolveRange, type RangeChoice } from '../logic/summary';
-import { exportCsv, exportXlsx } from '../exporter';
+import { exportXlsx } from '../exporter';
+import { DEFAULT_CAT_EMOJI } from '../types';
+import { EmojiPicker } from './EmojiPicker';
 import { Chip } from './Chip';
 import { ConfirmDelete } from './ConfirmDelete';
 import { BackupButton } from './Backup';
@@ -34,7 +36,7 @@ export function Settings({ catId, onImport, onInfo, onClose }: SettingsProps) {
     setNewCat('');
   }
 
-  async function runExport(kind: 'xlsx' | 'csv' | 'csv-semicolon') {
+  async function runExport() {
     if (!activeCat) return;
     setMessage('');
     const today = todayIn(store.timeZone());
@@ -51,8 +53,7 @@ export function Settings({ catId, onImport, onInfo, onClose }: SettingsProps) {
       today,
     };
     try {
-      if (kind === 'xlsx') await exportXlsx(input);
-      else exportCsv(input, kind === 'csv' ? ',' : ';');
+      await exportXlsx(input);
       setMessage(strings.export.done);
     } catch {
       setMessage(strings.export.failed);
@@ -163,15 +164,10 @@ export function Settings({ catId, onImport, onInfo, onClose }: SettingsProps) {
               </Chip>
             ))}
           </div>
-          <button type="button" class="btn" onClick={() => void runExport('xlsx')}>
+          <button type="button" class="btn" onClick={() => void runExport()}>
             {s.exportXlsx}
           </button>
-          <button type="button" class="btn" onClick={() => void runExport('csv')}>
-            {s.exportCsv}
-          </button>
-          <button type="button" class="btn" onClick={() => void runExport('csv-semicolon')}>
-            {s.exportCsvSemicolon}
-          </button>
+          <p class="hint">{s.exportJsonHint}</p>
           {message !== '' && (
             <p class="ok" role="status">
               {message}
@@ -223,23 +219,29 @@ function CatRow({ id }: { id: string }) {
       void store.updateCat(id, { name: name.trim() });
   };
   return (
-    <li class="inline">
-      <input
-        class="input"
-        type="text"
-        maxLength={60}
-        aria-label={s.rename}
-        value={name}
-        onInput={(e) => setName(e.currentTarget.value)}
-        onBlur={save}
+    <li class="stack">
+      <div class="inline">
+        <input
+          class="input"
+          type="text"
+          maxLength={60}
+          aria-label={s.rename}
+          value={name}
+          onInput={(e) => setName(e.currentTarget.value)}
+          onBlur={save}
+        />
+        <button
+          type="button"
+          class="btn"
+          onClick={() => void store.updateCat(id, { archived: !cat.archived })}
+        >
+          {cat.archived ? s.unarchive : s.archive}
+        </button>
+      </div>
+      <EmojiPicker
+        value={cat.emoji ?? DEFAULT_CAT_EMOJI}
+        onChange={(emoji) => void store.updateCat(id, { emoji })}
       />
-      <button
-        type="button"
-        class="btn"
-        onClick={() => void store.updateCat(id, { archived: !cat.archived })}
-      >
-        {cat.archived ? s.unarchive : s.archive}
-      </button>
     </li>
   );
 }

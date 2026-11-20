@@ -25,12 +25,14 @@ export function PeriodForm({ catId, existing, defaultStart, onDone }: PeriodForm
   const [note, setNote] = useState(existing?.note ?? '');
   const [color, setColor] = useState(existing?.color ?? store.nextColor(catId));
   const [error, setError] = useState('');
+  const [titleInvalid, setTitleInvalid] = useState(false);
   const [busy, setBusy] = useState(false);
 
   async function save() {
     setError('');
+    setTitleInvalid(false);
     if (title.trim() === '') {
-      setError(strings.periods.errTitle);
+      setTitleInvalid(true);
       return;
     }
     const endValue = end === '' ? null : end;
@@ -69,6 +71,7 @@ export function PeriodForm({ catId, existing, defaultStart, onDone }: PeriodForm
   return (
     <form
       class="form"
+      noValidate
       onSubmit={(e) => {
         e.preventDefault();
         void save();
@@ -82,9 +85,14 @@ export function PeriodForm({ catId, existing, defaultStart, onDone }: PeriodForm
           list="period-names"
           maxLength={100}
           value={title}
+          aria-invalid={titleInvalid}
           onInput={(e) => setTitle(e.currentTarget.value)}
-          required
         />
+        {titleInvalid && (
+          <span class="error" role="alert">
+            {strings.periods.errTitle}
+          </span>
+        )}
         <datalist id="period-names">
           {strings.periodNameHints.map((h) => (
             <option key={h} value={h} />

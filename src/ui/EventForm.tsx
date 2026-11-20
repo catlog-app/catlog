@@ -36,6 +36,10 @@ export function EventForm({ type, catId, existing, defaultDate, onDone }: EventF
   const tagged = existing?.type === 'sleep' || existing?.type === 'stress' ? existing : undefined;
   const stress = existing?.type === 'stress' ? existing : undefined;
 
+  const [nowValue] = useState(() => {
+    const now = stampFromMoment(Date.now(), tz);
+    return `${now.date}T${now.time}`;
+  });
   const [dateTime, setDateTime] = useState(startValue);
   const [note, setNote] = useState(existing?.note ?? '');
   const [texture, setTexture] = useState<number | null>(stool?.texture ?? null);
@@ -90,6 +94,11 @@ export function EventForm({ type, catId, existing, defaultDate, onDone }: EventF
       setError(strings.form.errDate);
       return;
     }
+    // An old entry that is already in the future can still be saved when its time is not changed.
+    if (dateTime > nowValue && dateTime !== startValue) {
+      setError(strings.form.errFuture);
+      return;
+    }
     const fields = buildFields();
     if (!fields) return;
     // Keep the saved zone and moment if the user did not change the time.
@@ -122,6 +131,7 @@ export function EventForm({ type, catId, existing, defaultDate, onDone }: EventF
   return (
     <form
       class="form"
+      noValidate
       onSubmit={(e) => {
         e.preventDefault();
         void save();
@@ -133,8 +143,9 @@ export function EventForm({ type, catId, existing, defaultDate, onDone }: EventF
           class="input"
           type="datetime-local"
           value={dateTime}
+          max={nowValue}
+          aria-invalid={error !== '' && dateTime > nowValue && dateTime !== startValue}
           onInput={(e) => setDateTime(e.currentTarget.value)}
-          required
         />
       </label>
 

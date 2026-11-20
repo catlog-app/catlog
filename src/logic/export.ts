@@ -206,16 +206,6 @@ export function buildSheets(input: ExportInput): SheetSet {
   };
 }
 
-/** CSV with a BOM, so Excel reads UTF-8 correctly. */
-export function toCsv(table: Table, delimiter: ',' | ';' = ','): string {
-  const escape = (cell: Cell): string => {
-    if (cell === null) return '';
-    const text = String(cell);
-    return /[",;\r\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
-  };
-  return '﻿' + table.map((row) => row.map(escape).join(delimiter)).join('\r\n') + '\r\n';
-}
-
 /** Letters and digits only, for file names. */
 export function slug(text: string): string {
   const s = text

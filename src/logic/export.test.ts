@@ -1,12 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  buildDailyTable,
-  buildEventsTable,
-  buildPeriodsTable,
-  safeText,
-  slug,
-  toCsv,
-} from './export';
+import { buildDailyTable, buildEventsTable, buildPeriodsTable, safeText, slug } from './export';
 import { buildVetSummary } from './vet';
 import { makeCat, makeEvent, makePeriod, makeStool } from '../testing/factories';
 
@@ -47,6 +40,7 @@ describe('export tables', () => {
   });
 
   it('lists several texture codes of a day in one cell that no spreadsheet reads as a number', () => {
+    // "2,3" could be read as 2.3 or 23, so the codes are joined with "; ".
     const events = [
       makeStool(cat.id, '2026-11-02', '08:00', { texture: 2 }),
       makeStool(cat.id, '2026-11-02', '20:00', { texture: 5 }),
@@ -73,19 +67,6 @@ describe('export tables', () => {
   it('stops spreadsheet formulas in user text', () => {
     expect(safeText('=1+1')).toBe("'=1+1");
     expect(safeText('Normal note')).toBe('Normal note');
-  });
-
-  it('builds CSV with BOM, quotes and the chosen delimiter', () => {
-    const csv = toCsv(
-      [
-        ['a', 'b;c'],
-        ['say "hi"', 2],
-      ],
-      ';',
-    );
-    expect(csv.startsWith('﻿')).toBe(true);
-    expect(csv).toContain('a;"b;c"\r\n');
-    expect(csv).toContain('"say ""hi""";2\r\n');
   });
 
   it('makes safe file names', () => {

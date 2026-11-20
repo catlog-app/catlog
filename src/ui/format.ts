@@ -5,18 +5,16 @@ import type { CatEvent } from '../types';
 
 export const textureOf = (code: number | null) => strings.textures.find((t) => t.code === code);
 export const waterOf = (code: number | null) => strings.waterLevels.find((w) => w.code === code);
-export const severityOf = (code: number | null) =>
-  strings.stressSeverity.find((s) => s.code === code);
+const severityOf = (code: number | null) => strings.stressSeverity.find((s) => s.code === code);
 
-export function tagEmoji(kind: 'sleep' | 'stress', text: string): string {
+function tagEmoji(kind: 'sleep' | 'stress', text: string): string {
   const list = kind === 'sleep' ? strings.sleepTags : strings.stressTags;
   return list.find((t) => t.text === text)?.emoji ?? '🏷️';
 }
 
-export const tagLabel = (kind: 'sleep' | 'stress', text: string) =>
-  `${tagEmoji(kind, text)} ${text}`;
+const tagLabel = (kind: 'sleep' | 'stress', text: string) => `${tagEmoji(kind, text)} ${text}`;
 
-export interface EventLine {
+interface EventLine {
   emoji: string;
   title: string;
   detail: string;

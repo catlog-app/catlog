@@ -109,8 +109,10 @@ export const strings = {
     intro:
       'Write down what your cat eats, drinks and does. Look at it later or show it to your vet.',
     privacy: 'Your data stays on this phone. There is no account and no server.',
+    emojiLabel: 'Pick a symbol for your cat',
     nameLabel: 'Your cat’s name',
     start: 'Start',
+    errName: 'Enter a name.',
     haveBackup: 'I already have a backup',
   },
 
@@ -142,11 +144,13 @@ export const strings = {
     addOwnButton: 'Add tag',
     errWater: 'Choose how much water.',
     errDate: 'Enter a valid date and time.',
+    errFuture: 'The entry cannot be in the future.',
     errSave: 'Could not save. Try again.',
   },
 
   day: {
     noEntries: 'No entries on this day.',
+    futureHint: 'This day has not come yet. You can add entries when it comes.',
     activePeriods: 'Active periods',
     addEntry: 'Add entry',
     addPeriod: 'Add period',
@@ -278,8 +282,8 @@ export const strings = {
     neverBackedUp: 'No backup yet.',
     export: 'Export',
     exportXlsx: 'Excel file (.xlsx)',
-    exportCsv: 'CSV files',
-    exportCsvSemicolon: 'CSV for Excel with semicolons',
+    exportJsonHint:
+      'For other tools, use “Back up now”. The backup is a JSON file with all your data.',
     exportRange: 'Export range',
     storage: 'Storage',
     storageProtected: 'Protected. The browser keeps your data unless you delete it.',
@@ -294,8 +298,7 @@ export const strings = {
   },
 
   backup: {
-    savedToDownloads:
-      'Saved to Downloads. To send it to Telegram: open Telegram, then Saved Messages, tap the attach button, choose File, then Downloads.',
+    savedToDownloads: 'Saved to Downloads.',
     shared: 'Backup shared.',
     cancelled: 'Backup cancelled.',
     failed: 'Backup failed. Try again.',
@@ -324,7 +327,7 @@ export const strings = {
       'Your entries are saved in this browser, on this phone. They never go to a server.',
       'If you clear “cookies and site data” or “storage” for this app, all entries are deleted.',
       'Clearing only “cached images and files” is safe. The data stays.',
-      'In Firefox, the setting “Delete browsing data on quit” can delete your data every time you close the browser. Turn it off for “Cookies and site data”.',
+      'Some browsers can delete site data when they close. Check this in your browser settings.',
       'Make a backup often. A backup is a file that you can import later.',
     ],
   },

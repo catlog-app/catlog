@@ -31,12 +31,12 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #12191a;
-    --surface: #1b2527;
-    --surface-2: #243032;
-    --text: #e8eeee;
-    --muted: #a4b2b4;
-    --line: #34454a;
+    --bg: #25282a;
+    --surface: #2f3335;
+    --surface-2: #383d3f;
+    --text: #e9ebeb;
+    --muted: #adb3b5;
+    --line: #494f52;
     --accent: #5cb8c2;
     --accent-text: #0c1a1c;
     --danger: #ff8a80;
@@ -255,6 +255,10 @@ textarea {
   border-radius: var(--radius);
   border: 1px solid var(--line);
   background: var(--surface);
+}
+.input[aria-invalid='true'] {
+  border-color: var(--danger);
+  border-width: 2px;
 }
 textarea.input {
   resize: vertical;

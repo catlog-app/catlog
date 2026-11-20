@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'preact/hooks';
 import { strings } from '../strings';
 import { store, useStore } from '../store';
-import type { EventType } from '../types';
+import { DEFAULT_CAT_EMOJI, type EventType } from '../types';
 import { backupReminderKey } from '../logic/reminders';
 import { Analysis } from './Analysis';
 import { BackupButton, ImportBackup } from './Backup';
@@ -152,7 +152,8 @@ export function App() {
     <div class="app">
       <header class="header">
         <h1 class="header__title">
-          <span aria-hidden="true">🐈</span> {cats.length > 1 ? '' : cat.name}
+          <span aria-hidden="true">{cat.emoji ?? DEFAULT_CAT_EMOJI}</span>{' '}
+          {cats.length > 1 ? '' : cat.name}
         </h1>
         {cats.length > 1 && (
           <select
@@ -197,21 +198,23 @@ export function App() {
         )}
       </div>
 
-      <nav class="quick" aria-label={strings.quickBar.label}>
-        {QUICK.map((t) => (
-          <button
-            key={t}
-            type="button"
-            class="quick__btn"
-            onClick={() => open({ kind: 'event', type: t })}
-          >
-            <span class="quick__emoji" aria-hidden="true">
-              {strings.types[t].emoji}
-            </span>
-            <span>{strings.types[t].label}</span>
-          </button>
-        ))}
-      </nav>
+      {tab === 'calendar' && (
+        <nav class="quick" aria-label={strings.quickBar.label}>
+          {QUICK.map((t) => (
+            <button
+              key={t}
+              type="button"
+              class="quick__btn"
+              onClick={() => open({ kind: 'event', type: t })}
+            >
+              <span class="quick__emoji" aria-hidden="true">
+                {strings.types[t].emoji}
+              </span>
+              <span>{strings.types[t].label}</span>
+            </button>
+          ))}
+        </nav>
+      )}
 
       <main class="main">
         {tab === 'calendar' && (

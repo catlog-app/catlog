@@ -19,16 +19,15 @@ A health diary for your cat. It works in the browser, also offline. **Your data 
 - Add **special periods**, like a new food or a medicine. Periods can overlap. They show as colored bars in the calendar.
 - Look at a **calendar**, a **log** and an **analysis** for 7, 14, 30 or 90 days.
 - Keep **more than one cat**.
-- **Export** to Excel (`.xlsx`) or CSV. Copy a short **summary for your vet**.
+- **Export** to Excel (`.xlsx`, three sheets) or to a JSON backup of all data. Copy a short **summary for your vet**.
 - **Back up** to a file and **import** it later.
 - No account, no server, no ads, no tracking. After the app loads, it makes no network requests.
 
 ## Install on Android
 
-Open the app link in your browser. The link is on the repository page, under **About**.
+Use **Chrome**. Open the app link. The link is on the repository page, under **About**.
 
-- **Chrome:** menu (⋮) → **Install app** (or **Add to Home screen**).
-- **Firefox:** menu (⋮) → **Install**.
+Menu (⋮) → **Install app**. Do not choose “Create shortcut”: it opens as a browser tab and shows a browser icon.
 
 Then open catlog from your home screen. It works without internet.
 
@@ -39,11 +38,11 @@ This part is important.
 - Entries are saved in the storage of your browser (IndexedDB), on your phone. They never go to a server.
 - The app files are cached for offline use. Clearing the cache (“cached images and files”) is **safe**. Your entries stay.
 - Clearing **“cookies and site data”**, **“storage”** or the **app data** deletes **all entries**.
-- In Firefox, the setting **“Delete browsing data on quit”** can delete your entries every time you close the browser. Turn it off for “Cookies and site data”. The app cannot detect this setting.
+- When you uninstall the app, Chrome offers to clear the site data too. This can delete the entries. Back up first.
+- Some browsers can delete site data when they close. Check this in your browser settings. The app cannot detect it.
 - The app asks the browser to keep the data. The browser may say no. This does not protect from clearing by hand. Settings show the real answer.
 - **Back up often.** Tap **Settings → Back up now**.
-  - Chrome on Android opens the share menu. You can send the file to Telegram, Drive or e-mail.
-  - Firefox on Android cannot share files from a web app. The file is saved to Downloads. You can then attach it in Telegram: **Saved Messages → attach → File → Downloads**.
+  - The share menu opens. You can send the file to Telegram, Drive or e-mail. If the browser cannot share files, the file is saved to Downloads.
 - The app shows a reminder if your last backup is older than 14 days and you have new entries.
 - The backup file is **not encrypted**. Keep it where only you can read it.
 
@@ -53,12 +52,68 @@ Every entry saves its own moment (UTC), time zone, local date and local time. If
 By default, the app follows your phone. In Settings you can choose a **fixed time zone**.
 Periods use plain dates without a time zone: “new food from 12 Nov” is 12 Nov everywhere.
 
+## Backup file format
+
+The backup is one JSON file. You can read it with any tool, for example `pandas.json_normalize`.
+
+```jsonc
+{
+  "app": "catlog",
+  "version": 1,
+  "exportedAt": 1795187679056, // UTC milliseconds
+  "cats": [
+    {
+      "id": "…",
+      "name": "Mila",
+      "emoji": "🐈",
+      "archived": false,
+      "customTags": { "sleep": [], "stress": [] },
+    },
+  ],
+  "events": [
+    // "type" is stool, water, sleep or stress. The other fields depend on the type.
+    {
+      "id": "…",
+      "catId": "…",
+      "type": "stool",
+      "texture": 2,
+      "mucus": 0,
+      "blood": 1,
+      "smell": 0,
+      "at": 1795068000000,
+      "tz": "Asia/Bishkek",
+      "date": "2026-11-19",
+      "time": "12:00",
+      "note": "",
+    },
+  ],
+  "periods": [
+    {
+      "id": "…",
+      "catId": "…",
+      "title": "Probiotic",
+      "kind": "med",
+      "start": "2026-11-02",
+      "end": null,
+    },
+  ],
+  "settings": { "timeZoneMode": "device", "weekStart": "mon" },
+}
+```
+
+- Cats, events and periods are separate lists. They are linked by `catId`.
+- `at` is the exact moment in UTC. `date`, `time` and `tz` are the local values at the time of writing.
+- `end: null` means the period is still running.
+- Scale codes are numbers: texture 1 (hard) to 5 (watery), mucus, blood and smell 0 to 3, water 1 to 3.
+
 ## About this project
 
 catlog is a personal project of [daluury](https://github.com/daluury), made for the maintainer's own use. The idea, the decisions and the review are human. **The code was written with the help of AI** (Claude by Anthropic). Commits with AI help have a `Co-Authored-By` line.
 Improvements are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Status: version 0.1. The tests run in Chromium. **Not yet checked on a real phone** (Firefox and Chrome on Android). See the list in [Checks on a real phone](#checks-on-a-real-phone).
+The app tracks what the maintainer needs. If a symptom or a field is missing for you, make your own version: the [MIT license](LICENSE) lets you copy and change the code. Keep the license notice.
+
+Status: version 0.1. The automatic tests run in Chromium. The app was also tried on a real phone, see [Tested on a real phone](#tested-on-a-real-phone).
 
 ## Run it on your computer
 
@@ -108,17 +163,16 @@ e2e/            Playwright tests
 The app has a strict Content Security Policy in a `<meta>` tag: only its own files, `connect-src 'none'`.
 GitHub Pages cannot send headers, so this is the best option. See [SECURITY.md](SECURITY.md).
 
-## Checks on a real phone
+## Tested on a real phone
 
-Automatic tests cannot cover these. Please try them and report the result:
+Chrome on Android, November 2026:
 
-- [ ] Install as an app in **Firefox** (a separate app entry, not a shortcut) and in **Chrome**.
-- [ ] Open from the home screen in airplane mode.
-- [ ] Backup, then clear the site data, then import: all entries are back.
-- [ ] Clear only the cache: the entries stay.
-- [ ] Chrome: the backup goes to Telegram through the share menu. Firefox: the file is saved and the hint shows.
-- [ ] Firefox with “Delete browsing data on quit” on: check what happens to the entries and to the installed app.
-- [ ] Does the installed app share storage with the browser tab? What happens to data when you uninstall it?
+- Installs as an app. It shows in the app list and has no browser icon.
+- Opens and works in airplane mode.
+- The backup goes through the share menu.
+- After a backup and clearing the site data, the import brings all entries back.
+- Clearing only the cache keeps the entries.
+- Uninstalling the app keeps the entries, unless you also choose to clear the site data.
 
 ## License
 

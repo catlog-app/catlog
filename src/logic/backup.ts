@@ -2,9 +2,11 @@
 // Every field is checked, and only known fields are copied.
 
 import {
+  CAT_EMOJIS,
   DEFAULT_SETTINGS,
   PALETTE,
   type Cat,
+  type CatEmoji,
   type CatEvent,
   type Level,
   type PaletteColor,
@@ -79,9 +81,12 @@ function readCat(v: unknown): Cat | null {
   const sleep = tagList(tags['sleep'] ?? []);
   const stress = tagList(tags['stress'] ?? []);
   if (!sleep || !stress) return null;
+  const emoji = v['emoji'];
+  if (emoji !== undefined && !(CAT_EMOJIS as readonly unknown[]).includes(emoji)) return null;
   return {
     id: v['id'],
     name: v['name'],
+    ...(emoji === undefined ? {} : { emoji: emoji as CatEmoji }),
     archived: v['archived'],
     customTags: { sleep, stress },
     createdAt: v['createdAt'],
