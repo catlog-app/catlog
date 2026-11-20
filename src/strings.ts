@@ -284,7 +284,6 @@ export const strings = {
     exportXlsx: 'Excel file (.xlsx)',
     exportJsonHint:
       'For other tools, use “Back up now”. The backup is a JSON file with all your data.',
-    catSymbol: 'Symbol',
     exportRange: 'Export range',
     storage: 'Storage',
     storageProtected: 'Protected. The browser keeps your data unless you delete it.',
