@@ -1,0 +1,770 @@
+/* Plain CSS with variables. No inline styles, so the strict CSP can stay in place. */
+
+:root {
+  --bg: #fbf8f3;
+  --surface: #ffffff;
+  --surface-2: #f1ece3;
+  --text: #1f2a2c;
+  --muted: #5d6b6d;
+  --line: #ded6c8;
+  --accent: #2f6f73;
+  --accent-text: #ffffff;
+  --danger: #b3261e;
+  --ok: #1f6b3a;
+  --focus: #1a56db;
+  --radius: 14px;
+
+  /* Period colors. Each is dark enough for a white label and visible on both themes. */
+  --c-teal: #1f8a8a;
+  --c-orange: #d9731a;
+  --c-purple: #7e57c2;
+  --c-blue: #2f6fd1;
+  --c-pink: #d6458a;
+  --c-olive: #7a8a1f;
+  --c-red: #c93a3a;
+  --c-brown: #8a5a3c;
+  --c-gray: #6f7a80;
+  --c-gold: #b8900f;
+
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #12191a;
+    --surface: #1b2527;
+    --surface-2: #243032;
+    --text: #e8eeee;
+    --muted: #a4b2b4;
+    --line: #34454a;
+    --accent: #5cb8c2;
+    --accent-text: #0c1a1c;
+    --danger: #ff8a80;
+    --ok: #7fd49a;
+    --focus: #8ab4ff;
+  }
+}
+
+[data-color='teal'] {
+  --period: var(--c-teal);
+}
+[data-color='orange'] {
+  --period: var(--c-orange);
+}
+[data-color='purple'] {
+  --period: var(--c-purple);
+}
+[data-color='blue'] {
+  --period: var(--c-blue);
+}
+[data-color='pink'] {
+  --period: var(--c-pink);
+}
+[data-color='olive'] {
+  --period: var(--c-olive);
+}
+[data-color='red'] {
+  --period: var(--c-red);
+}
+[data-color='brown'] {
+  --period: var(--c-brown);
+}
+[data-color='gray'] {
+  --period: var(--c-gray);
+}
+[data-color='gold'] {
+  --period: var(--c-gold);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font:
+    16px/1.45 system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+}
+
+body.no-scroll {
+  overflow: hidden;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.muted {
+  color: var(--muted);
+}
+.hint {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+.ok {
+  color: var(--ok);
+}
+.error {
+  color: var(--danger);
+  font-weight: 600;
+}
+.center {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+/* ---------- layout ---------- */
+
+.app {
+  max-width: 640px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: calc(64px + env(safe-area-inset-bottom));
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+}
+.header__title {
+  font-size: 1.25rem;
+  flex: 1;
+}
+.header__cat {
+  max-width: 11rem;
+}
+.header__settings {
+  font-size: 1.4rem;
+}
+
+.main {
+  padding: 0 1rem 1rem;
+  flex: 1;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.stack--big {
+  gap: 1.5rem;
+}
+.inline {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.inline .input {
+  flex: 1;
+  min-width: 0;
+}
+.two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+.plain {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--muted);
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+/* ---------- controls ---------- */
+
+.btn {
+  min-height: 44px;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  cursor: pointer;
+}
+.btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.btn--primary {
+  background: var(--accent);
+  color: var(--accent-text);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+.btn--ghost {
+  background: transparent;
+  border-color: transparent;
+}
+.btn--small {
+  min-height: 36px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.9rem;
+}
+.btn--danger {
+  color: var(--danger);
+  border-color: var(--danger);
+  background: transparent;
+}
+.btn--danger-armed {
+  background: var(--danger);
+  color: var(--bg);
+}
+
+.input {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+textarea.input {
+  resize: vertical;
+}
+.vet {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 0.85rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.field__label {
+  font-weight: 600;
+}
+.group {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+.group legend {
+  padding: 0;
+  margin-bottom: 0.25rem;
+}
+.level {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
+}
+/* Four equal buttons in one row, also on a 360 px screen. */
+.level .chips {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+.level .chip {
+  padding: 0.4rem 0.15rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
+.level__name {
+  font-weight: 500;
+}
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.chip {
+  min-height: 44px;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  border: 2px solid var(--line);
+  background: var(--surface);
+  cursor: pointer;
+}
+/* The selected state has a thick border and a check mark, so color is not the only signal. */
+.chip[aria-pressed='true'] {
+  border-color: var(--accent);
+  background: var(--surface-2);
+  font-weight: 700;
+}
+.chip[aria-pressed='true']::before {
+  content: '✓ ';
+  color: var(--accent);
+}
+
+.swatch {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  background: var(--period);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+.swatch[aria-pressed='true'] {
+  border-color: var(--text);
+}
+
+/* ---------- quick buttons and tabs ---------- */
+
+.quick {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  padding: 0.25rem 1rem 0.75rem;
+}
+.quick__btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  min-height: 60px;
+  padding: 0.4rem 0.25rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.quick__emoji {
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.tabs {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 640px;
+  margin: 0 auto;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.tabs__btn {
+  min-height: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+  border: 0;
+  background: transparent;
+  font-size: 0.8rem;
+  color: var(--muted);
+  cursor: pointer;
+}
+.tabs__btn[aria-current='page'] {
+  color: var(--accent);
+  font-weight: 700;
+  border-top: 3px solid var(--accent);
+}
+
+/* ---------- banners ---------- */
+
+.banners {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0 1rem;
+}
+.banner {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  font-size: 0.9rem;
+}
+.banner__text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* ---------- sheet ---------- */
+
+.sheet-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.sheet-backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgb(0 0 0 / 0.45);
+  cursor: pointer;
+}
+.sheet {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  max-height: 92dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  border-radius: 20px 20px 0 0;
+}
+.sheet:focus {
+  outline: none;
+}
+.sheet__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+.sheet__title {
+  font-size: 1.1rem;
+}
+.sheet__body {
+  overflow-y: auto;
+  padding: 1rem 1rem calc(1.5rem + env(safe-area-inset-bottom));
+}
+
+/* ---------- lists ---------- */
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.row {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  min-height: 48px;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  cursor: pointer;
+}
+.row__time {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  min-width: 3rem;
+}
+.row__emoji {
+  font-size: 1.25rem;
+}
+.row__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.row__title {
+  font-weight: 600;
+}
+.row__detail,
+.row__note {
+  font-size: 0.875rem;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.row__note {
+  font-style: italic;
+}
+
+.dots {
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+}
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--period);
+}
+
+.legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.legend__item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 40px;
+  width: 100%;
+  padding: 0.25rem 0.5rem;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.card {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 6px solid var(--period);
+}
+.card__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 0.25rem 0;
+}
+.card__title {
+  font-weight: 600;
+}
+
+/* ---------- calendar ---------- */
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.calendar__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.calendar__title {
+  font-size: 1.1rem;
+}
+.calendar__nav .btn {
+  font-size: 1.5rem;
+  min-width: 48px;
+}
+.calendar > .btn--small {
+  align-self: flex-start;
+}
+
+.calendar__head,
+.calendar__week {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+.calendar__head {
+  color: var(--muted);
+  font-size: 0.75rem;
+  text-align: center;
+  padding-bottom: 0.25rem;
+}
+.calendar__grid {
+  border-top: 1px solid var(--line);
+}
+
+.cell {
+  min-height: 74px;
+  padding: 2px 0 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  text-align: left;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+  cursor: pointer;
+  overflow: hidden;
+}
+.cell[data-outside='true'] {
+  opacity: 0.45;
+}
+.cell[data-today='true'] .cell__num {
+  background: var(--accent);
+  color: var(--accent-text);
+  border-radius: 999px;
+  font-weight: 700;
+}
+.cell__num {
+  align-self: flex-start;
+  min-width: 1.4rem;
+  margin-left: 2px;
+  text-align: center;
+  font-size: 0.8rem;
+}
+.cell__icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1px;
+  padding: 0 2px;
+  font-size: 0.7rem;
+  line-height: 1.25;
+  flex: 1;
+  align-content: flex-start;
+}
+.cell__count {
+  font-weight: 700;
+}
+
+/* Period bars touch the cell edges, so a period looks like one long bar across days. */
+.cell__bars {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-bottom: 2px;
+}
+.bar {
+  display: block;
+  height: 5px;
+  background: var(--period);
+}
+.bar--empty {
+  background: transparent;
+}
+.bar[data-start='true'] {
+  margin-left: 3px;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+.bar[data-end='true'] {
+  margin-right: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+/* ---------- analysis ---------- */
+
+.facts {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+}
+.facts div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.facts dt {
+  color: var(--muted);
+}
+.facts dd {
+  margin: 0;
+  font-weight: 700;
+}
+
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.875rem;
+}
+.table th,
+.table td {
+  padding: 0.4rem 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+.table thead th {
+  color: var(--muted);
+  font-weight: 600;
+}
+.table .is-empty {
+  color: var(--muted);
+}
+.table--small {
+  max-width: 28rem;
+}
+/* Let the small table wrap its text, so it never makes the page wider than the screen. */
+.table--small th,
+.table--small td {
+  white-space: normal;
+}
+
+/* ---------- onboarding ---------- */
+
+.onboarding {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .btn,
+  .chip,
+  .cell {
+    transition: background-color 0.15s;
+  }
+}

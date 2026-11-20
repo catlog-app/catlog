@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="A calm cat face with closed happy eyes and a small heart">
+  <rect width="512" height="512" fill="#2F6F73"/>
+  <!-- ears -->
+  <polygon points="130,248 126,92 236,168" fill="#FFF3E3"/>
+  <polygon points="382,248 386,92 276,168" fill="#FFF3E3"/>
+  <polygon points="142,208 148,132 206,172" fill="#F2B8A8"/>
+  <polygon points="370,208 364,132 306,172" fill="#F2B8A8"/>
+  <!-- head -->
+  <ellipse cx="256" cy="292" rx="156" ry="128" fill="#FFF3E3"/>
+  <!-- happy closed eyes -->
+  <path d="M184 288 q24 -30 48 0" fill="none" stroke="#2B2B2B" stroke-width="13" stroke-linecap="round"/>
+  <path d="M280 288 q24 -30 48 0" fill="none" stroke="#2B2B2B" stroke-width="13" stroke-linecap="round"/>
+  <!-- nose and mouth -->
+  <path d="M240 322 h32 l-16 19 z" fill="#E8736C" stroke="#E8736C" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M256 341 v10 M256 351 q-14 14 -30 6 M256 351 q14 14 30 6" fill="none" stroke="#2B2B2B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- whiskers -->
+  <path d="M104 318 l62 10 M100 350 l66 -2 M408 318 l-62 10 M412 350 l-66 -2" fill="none" stroke="#2B2B2B" stroke-width="7" stroke-linecap="round" opacity="0.75"/>
+  <!-- small heart on the forehead -->
+  <path d="M256 236 c-14 -16 -38 -2 -24 16 l24 22 l24 -22 c14 -18 -10 -32 -24 -16 z" fill="#E8736C"/>
+</svg>

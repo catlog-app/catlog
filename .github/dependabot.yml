@@ -1,0 +1,23 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    # A new release must be 7 days old. This gives time to find a bad or hijacked release.
+    cooldown:
+      default-days: 7
+    # Updates are reviewed by hand. Read the diff of package-lock.json before you merge.
+    commit-message:
+      prefix: 'Update'
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: 'Update'

@@ -1,0 +1,16 @@
+name: Idea
+description: Suggest a new feature or a change.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like?
+      description: Say what problem you want to solve. Keep it short.
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        The app has no server and makes no network requests. Ideas that need an account,
+        a server or tracking do not fit this project.
