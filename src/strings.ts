@@ -332,7 +332,7 @@ export const strings = {
       'Your entries are saved in this browser, on this phone. They never go to a server.',
       'If you clear “cookies and site data” or “storage” for this app, all entries are deleted.',
       'Clearing only “cached images and files” is safe. The data stays.',
-      'In Firefox, the setting “Delete browsing data on quit” can delete your data every time you close the browser. Turn it off for “Cookies and site data”.',
+      'Some browsers can delete site data when they close. Check this in your browser settings.',
       'Make a backup often. A backup is a file that you can import later.',
     ],
   },

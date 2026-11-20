@@ -25,10 +25,9 @@ A health diary for your cat. It works in the browser, also offline. **Your data 
 
 ## Install on Android
 
-Open the app link in your browser. The link is on the repository page, under **About**.
+Use **Chrome**. Open the app link. The link is on the repository page, under **About**.
 
-- **Chrome:** menu (⋮) → **Install app** (or **Add to Home screen**).
-- **Firefox:** menu (⋮) → **Install**.
+Menu (⋮) → **Install app**. Do not choose “Create shortcut”: it opens as a browser tab and shows a browser icon.
 
 Then open catlog from your home screen. It works without internet.
 
@@ -39,11 +38,10 @@ This part is important.
 - Entries are saved in the storage of your browser (IndexedDB), on your phone. They never go to a server.
 - The app files are cached for offline use. Clearing the cache (“cached images and files”) is **safe**. Your entries stay.
 - Clearing **“cookies and site data”**, **“storage”** or the **app data** deletes **all entries**.
-- In Firefox, the setting **“Delete browsing data on quit”** can delete your entries every time you close the browser. Turn it off for “Cookies and site data”. The app cannot detect this setting.
+- Some browsers can delete site data when they close. Check this in your browser settings. The app cannot detect it.
 - The app asks the browser to keep the data. The browser may say no. This does not protect from clearing by hand. Settings show the real answer.
 - **Back up often.** Tap **Settings → Back up now**.
-  - Chrome on Android opens the share menu. You can send the file to Telegram, Drive or e-mail.
-  - Firefox on Android cannot share files from a web app. The file is saved to Downloads. You can then send it from there.
+  - The share menu opens. You can send the file to Telegram, Drive or e-mail. If the browser cannot share files, the file is saved to Downloads.
 - The app shows a reminder if your last backup is older than 14 days and you have new entries.
 - The backup file is **not encrypted**. Keep it where only you can read it.
 
@@ -58,7 +56,7 @@ Periods use plain dates without a time zone: “new food from 12 Nov” is 12 No
 catlog is a personal project of [daluury](https://github.com/daluury), made for the maintainer's own use. The idea, the decisions and the review are human. **The code was written with the help of AI** (Claude by Anthropic). Commits with AI help have a `Co-Authored-By` line.
 Improvements are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Status: version 0.1. The tests run in Chromium. **Not yet checked on a real phone** (Firefox and Chrome on Android). See the list in [Checks on a real phone](#checks-on-a-real-phone).
+Status: version 0.1. The tests run in Chromium. Partly checked on a real phone (Chrome on Android). See [Checks on a real phone](#checks-on-a-real-phone).
 
 ## Run it on your computer
 
@@ -112,13 +110,17 @@ GitHub Pages cannot send headers, so this is the best option. See [SECURITY.md](
 
 Automatic tests cannot cover these. Please try them and report the result:
 
-- [ ] Install as an app in **Firefox** (a separate app entry, not a shortcut) and in **Chrome**.
+Checked in Chrome on Android:
+
+- [x] Install as an app. It shows in the app list and has no browser icon.
+- [x] The backup goes through the share menu.
+
+Still to check:
+
 - [ ] Open from the home screen in airplane mode.
 - [ ] Backup, then clear the site data, then import: all entries are back.
 - [ ] Clear only the cache: the entries stay.
-- [ ] Chrome: the backup goes through the share menu. Firefox: the file is saved to Downloads.
-- [ ] Firefox with “Delete browsing data on quit” on: check what happens to the entries and to the installed app.
-- [ ] Does the installed app share storage with the browser tab? What happens to data when you uninstall it?
+- [ ] What happens to the data when you uninstall the app?
 
 ## License
 
