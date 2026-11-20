@@ -19,7 +19,7 @@ A health diary for your cat. It works in the browser, also offline. **Your data 
 - Add **special periods**, like a new food or a medicine. Periods can overlap. They show as colored bars in the calendar.
 - Look at a **calendar**, a **log** and an **analysis** for 7, 14, 30 or 90 days.
 - Keep **more than one cat**.
-- **Export** to Excel (`.xlsx`) or CSV. Copy a short **summary for your vet**.
+- **Export** to Excel (`.xlsx`, three sheets) or to a JSON backup of all data. Copy a short **summary for your vet**.
 - **Back up** to a file and **import** it later.
 - No account, no server, no ads, no tracking. After the app loads, it makes no network requests.
 
@@ -51,6 +51,60 @@ This part is important.
 Every entry saves its own moment (UTC), time zone, local date and local time. If you travel or the rules of a time zone change, **old entries stay on their day**.
 By default, the app follows your phone. In Settings you can choose a **fixed time zone**.
 Periods use plain dates without a time zone: “new food from 12 Nov” is 12 Nov everywhere.
+
+## Backup file format
+
+The backup is one JSON file. You can read it with any tool, for example `pandas.json_normalize`.
+
+```jsonc
+{
+  "app": "catlog",
+  "version": 1,
+  "exportedAt": 1795187679056, // UTC milliseconds
+  "cats": [
+    {
+      "id": "…",
+      "name": "Mila",
+      "emoji": "🐈",
+      "archived": false,
+      "customTags": { "sleep": [], "stress": [] },
+    },
+  ],
+  "events": [
+    // "type" is stool, water, sleep or stress. The other fields depend on the type.
+    {
+      "id": "…",
+      "catId": "…",
+      "type": "stool",
+      "texture": 2,
+      "mucus": 0,
+      "blood": 1,
+      "smell": 0,
+      "at": 1795068000000,
+      "tz": "Asia/Bishkek",
+      "date": "2026-11-19",
+      "time": "12:00",
+      "note": "",
+    },
+  ],
+  "periods": [
+    {
+      "id": "…",
+      "catId": "…",
+      "title": "Probiotic",
+      "kind": "med",
+      "start": "2026-11-02",
+      "end": null,
+    },
+  ],
+  "settings": { "timeZoneMode": "device", "weekStart": "mon" },
+}
+```
+
+- Cats, events and periods are separate lists. They are linked by `catId`.
+- `at` is the exact moment in UTC. `date`, `time` and `tz` are the local values at the time of writing.
+- `end: null` means the period is still running.
+- Scale codes are numbers: texture 1 (hard) to 5 (watery), mucus, blood and smell 0 to 3, water 1 to 3.
 
 ## About this project
 

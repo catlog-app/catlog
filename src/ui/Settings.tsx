@@ -4,9 +4,8 @@ import { store, useStore } from '../store';
 import { formatDate } from '../logic/dates';
 import { listTimeZones, todayIn, getDeviceTimeZone } from '../logic/time';
 import { resolveRange, type RangeChoice } from '../logic/summary';
-import { exportCsv, exportXlsx } from '../exporter';
+import { exportXlsx } from '../exporter';
 import { DEFAULT_CAT_EMOJI } from '../types';
-import type { Sheet } from '../logic/export';
 import { EmojiPicker } from './EmojiPicker';
 import { Chip } from './Chip';
 import { ConfirmDelete } from './ConfirmDelete';
@@ -20,11 +19,6 @@ interface SettingsProps {
 }
 
 const RANGES: RangeChoice[] = [7, 14, 30, 90, 'all'];
-const SHEETS = [
-  ['Events', 'csvEvents'],
-  ['Daily', 'csvDaily'],
-  ['Periods', 'csvPeriods'],
-] as const;
 
 export function Settings({ catId, onImport, onInfo, onClose }: SettingsProps) {
   const { snapshot, persisted } = useStore();
@@ -32,7 +26,6 @@ export function Settings({ catId, onImport, onInfo, onClose }: SettingsProps) {
   const [newCat, setNewCat] = useState('');
   const [range, setRange] = useState<RangeChoice>('all');
   const [message, setMessage] = useState('');
-  const [delimiter, setDelimiter] = useState<',' | ';'>(',');
   const s = strings.settings;
 
   const activeCat = cats.find((c) => c.id === catId);
@@ -43,7 +36,7 @@ export function Settings({ catId, onImport, onInfo, onClose }: SettingsProps) {
     setNewCat('');
   }
 
-  async function runExport(kind: 'xlsx' | Sheet) {
+  async function runExport() {
     if (!activeCat) return;
     setMessage('');
     const today = todayIn(store.timeZone());
@@ -60,8 +53,7 @@ export function Settings({ catId, onImport, onInfo, onClose }: SettingsProps) {
       today,
     };
     try {
-      if (kind === 'xlsx') await exportXlsx(input);
-      else exportCsv(input, kind, delimiter);
+      await exportXlsx(input);
       setMessage(strings.export.done);
     } catch {
       setMessage(strings.export.failed);
@@ -172,25 +164,10 @@ export function Settings({ catId, onImport, onInfo, onClose }: SettingsProps) {
               </Chip>
             ))}
           </div>
-          <button type="button" class="btn" onClick={() => void runExport('xlsx')}>
+          <button type="button" class="btn" onClick={() => void runExport()}>
             {s.exportXlsx}
           </button>
-          <h4 class="subtitle">{s.csvTitle}</h4>
-          <div class="chips" role="group" aria-label={s.csvTitle}>
-            <Chip selected={delimiter === ','} onClick={() => setDelimiter(',')}>
-              {s.csvComma}
-            </Chip>
-            <Chip selected={delimiter === ';'} onClick={() => setDelimiter(';')}>
-              {s.csvSemicolon}
-            </Chip>
-          </div>
-          <div class="chips">
-            {SHEETS.map(([sheet, label]) => (
-              <button key={sheet} type="button" class="btn" onClick={() => void runExport(sheet)}>
-                {s[label]}
-              </button>
-            ))}
-          </div>
+          <p class="hint">{s.exportJsonHint}</p>
           {message !== '' && (
             <p class="ok" role="status">
               {message}

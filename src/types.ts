@@ -33,8 +33,8 @@ interface Base {
   updatedAt: number;
 }
 
-/** Emoji that stand for a cat. Emoji have no skin tones for cats, so these are the options. */
-export const CAT_EMOJIS = ['🐈', '🐈‍⬛', '🐱', '😺', '😸', '😻'] as const;
+/** Emoji that stand for a pet. Emoji have no colors for cats, so these are the options. */
+export const CAT_EMOJIS = ['🐈', '🐈‍⬛', '🐅', '😸', '🐶'] as const;
 export type CatEmoji = (typeof CAT_EMOJIS)[number];
 export const DEFAULT_CAT_EMOJI: CatEmoji = '🐈';
 

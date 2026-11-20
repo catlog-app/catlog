@@ -4,7 +4,7 @@
 export type DeliverResult = 'shared' | 'downloaded' | 'cancelled';
 
 /** Save a file with the normal browser download. */
-export function downloadFile(file: File): void {
+function downloadFile(file: File): void {
   const url = URL.createObjectURL(file);
   const a = document.createElement('a');
   a.href = url;

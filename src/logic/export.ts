@@ -11,8 +11,7 @@ import { formatOffset, offsetMinutes } from './time';
 export type Cell = string | number | null;
 export type Table = Cell[][]; // first row = header
 
-export type Sheet = 'Events' | 'Daily' | 'Periods';
-export type SheetSet = Record<Sheet, Table>;
+export type SheetSet = Record<'Events' | 'Daily' | 'Periods', Table>;
 
 export interface ExportInput {
   cat: Cat;
@@ -205,16 +204,6 @@ export function buildSheets(input: ExportInput): SheetSet {
     Daily: buildDailyTable(input),
     Periods: buildPeriodsTable(input),
   };
-}
-
-/** CSV with a BOM, so Excel reads UTF-8 correctly. */
-export function toCsv(table: Table, delimiter: ',' | ';' = ','): string {
-  const escape = (cell: Cell): string => {
-    if (cell === null) return '';
-    const text = String(cell);
-    return /[",;\r\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
-  };
-  return '﻿' + table.map((row) => row.map(escape).join(delimiter)).join('\r\n') + '\r\n';
 }
 
 /** Letters and digits only, for file names. */
