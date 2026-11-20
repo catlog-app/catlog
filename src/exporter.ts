@@ -2,7 +2,7 @@
 
 import { store } from './store';
 import { backupFileName, createBackup } from './logic/backup';
-import { buildSheets, slug, toCsv, type ExportInput, type Table } from './logic/export';
+import { buildSheets, slug, toCsv, type ExportInput, type Sheet, type Table } from './logic/export';
 import { deliverFile, downloadFile, type DeliverResult } from './platform';
 
 const XLSX_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
@@ -28,12 +28,11 @@ export async function exportXlsx(input: ExportInput): Promise<DeliverResult> {
   return deliverFile(new File([blob], name, { type: XLSX_TYPE }), name);
 }
 
-/** One CSV file per sheet. Some browsers ask before they allow several downloads. */
-export function exportCsv(input: ExportInput, delimiter: ',' | ';'): void {
-  for (const [sheet, table] of Object.entries(buildSheets(input))) {
-    const name = `catlog-${slug(input.cat.name)}-${sheet.toLowerCase()}-${stamp()}.csv`;
-    downloadFile(new File([toCsv(table, delimiter)], name, { type: 'text/csv;charset=utf-8' }));
-  }
+/** One CSV file for one table. Several downloads at once are blocked in some browsers. */
+export function exportCsv(input: ExportInput, sheet: Sheet, delimiter: ',' | ';'): void {
+  const table = buildSheets(input)[sheet];
+  const name = `catlog-${slug(input.cat.name)}-${sheet.toLowerCase()}-${stamp()}.csv`;
+  downloadFile(new File([toCsv(table, delimiter)], name, { type: 'text/csv;charset=utf-8' }));
 }
 
 /** Share the backup file (Chrome) or download it (Firefox). */

@@ -39,6 +39,10 @@ test('records entries, offers own tags, and makes no outside requests or CSP err
   await tab(page, 'Log').click();
   await expect(page.getByRole('button', { name: /Poop/ }).filter({ hasText: ':' })).toHaveCount(1);
 
+  // The quick buttons are only on the calendar screen.
+  await expect(quick(page, 'Sleep')).toHaveCount(0);
+  await tab(page, 'Calendar').click();
+
   // An empty sleep entry with an own tag. The tag is offered again next time.
   await quick(page, 'Sleep').click();
   await page.getByLabel('Add your own…').fill('Plays at 3 am');
@@ -50,6 +54,26 @@ test('records entries, offers own tags, and makes no outside requests or CSP err
 
   expect(outside).toEqual([]);
   expect(problems).toEqual([]);
+});
+
+test('shows a clear error for an empty name and for a time in the future', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: 'Start' }).click();
+  await expect(page.getByRole('alert')).toHaveText('Enter a name.');
+  await page.getByLabel('Your cat’s name').fill('Mila');
+  await page.getByRole('button', { name: 'Start' }).click();
+
+  await tab(page, 'Periods').click();
+  await page.getByRole('button', { name: 'New period' }).click();
+  await page.getByRole('button', { name: 'Save' }).click();
+  await expect(page.getByRole('alert')).toHaveText('Enter a name.');
+
+  await page.keyboard.press('Escape');
+  await tab(page, 'Calendar').click();
+  await quick(page, 'Water').click();
+  await page.getByLabel('Date and time').fill('2099-01-01T12:00');
+  await page.getByRole('button', { name: 'Save' }).click();
+  await expect(page.getByRole('alert')).toHaveText('The entry cannot be in the future.');
 });
 
 test('shows two overlapping periods as bars on the same day', async ({ page }) => {

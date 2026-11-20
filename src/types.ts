@@ -33,8 +33,15 @@ interface Base {
   updatedAt: number;
 }
 
+/** Emoji that stand for a cat. Emoji have no skin tones for cats, so these are the options. */
+export const CAT_EMOJIS = ['🐈', '🐈‍⬛', '🐱', '😺', '😸', '😻'] as const;
+export type CatEmoji = (typeof CAT_EMOJIS)[number];
+export const DEFAULT_CAT_EMOJI: CatEmoji = '🐈';
+
 export interface Cat extends Base {
   name: string;
+  /** Missing in data from older versions. Then the default is used. */
+  emoji?: CatEmoji;
   archived: boolean;
   /** Own tags, saved as text so exports stay readable. */
   customTags: { sleep: string[]; stress: string[] };

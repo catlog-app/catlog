@@ -4,9 +4,11 @@
 import { useEffect, useState } from 'preact/hooks';
 import { Database } from './db';
 import {
+  DEFAULT_CAT_EMOJI,
   DEFAULT_SETTINGS,
   PALETTE,
   type Cat,
+  type CatEmoji,
   type CatEvent,
   type Period,
   type Settings,
@@ -172,11 +174,12 @@ class Store {
 
   // ---------- cats ----------
 
-  async addCat(name: string): Promise<Cat> {
+  async addCat(name: string, emoji: CatEmoji = DEFAULT_CAT_EMOJI): Promise<Cat> {
     const now = Date.now();
     const cat: Cat = {
       id: crypto.randomUUID(),
       name: name.trim(),
+      emoji,
       archived: false,
       customTags: { sleep: [], stress: [] },
       createdAt: now,
@@ -188,7 +191,7 @@ class Store {
     return cat;
   }
 
-  async updateCat(id: string, patch: Partial<Pick<Cat, 'name' | 'archived'>>) {
+  async updateCat(id: string, patch: Partial<Pick<Cat, 'name' | 'emoji' | 'archived'>>) {
     const old = this.state.snapshot.cats.find((c) => c.id === id);
     if (!old) return;
     const cat: Cat = { ...old, ...patch, updatedAt: Date.now() };

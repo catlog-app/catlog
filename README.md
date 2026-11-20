@@ -43,7 +43,7 @@ This part is important.
 - The app asks the browser to keep the data. The browser may say no. This does not protect from clearing by hand. Settings show the real answer.
 - **Back up often.** Tap **Settings → Back up now**.
   - Chrome on Android opens the share menu. You can send the file to Telegram, Drive or e-mail.
-  - Firefox on Android cannot share files from a web app. The file is saved to Downloads. You can then attach it in Telegram: **Saved Messages → attach → File → Downloads**.
+  - Firefox on Android cannot share files from a web app. The file is saved to Downloads. You can then send it from there.
 - The app shows a reminder if your last backup is older than 14 days and you have new entries.
 - The backup file is **not encrypted**. Keep it where only you can read it.
 
@@ -116,7 +116,7 @@ Automatic tests cannot cover these. Please try them and report the result:
 - [ ] Open from the home screen in airplane mode.
 - [ ] Backup, then clear the site data, then import: all entries are back.
 - [ ] Clear only the cache: the entries stay.
-- [ ] Chrome: the backup goes to Telegram through the share menu. Firefox: the file is saved and the hint shows.
+- [ ] Chrome: the backup goes through the share menu. Firefox: the file is saved to Downloads.
 - [ ] Firefox with “Delete browsing data on quit” on: check what happens to the entries and to the installed app.
 - [ ] Does the installed app share storage with the browser tab? What happens to data when you uninstall it?
 

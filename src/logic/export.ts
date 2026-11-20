@@ -11,7 +11,8 @@ import { formatOffset, offsetMinutes } from './time';
 export type Cell = string | number | null;
 export type Table = Cell[][]; // first row = header
 
-export type SheetSet = Record<'Events' | 'Daily' | 'Periods', Table>;
+export type Sheet = 'Events' | 'Daily' | 'Periods';
+export type SheetSet = Record<Sheet, Table>;
 
 export interface ExportInput {
   cat: Cat;
